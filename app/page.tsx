@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -12,6 +13,12 @@ export default function Home() {
           height={38}
           priority
         />
+        <p>Page Updated!!!!</p>
+        <Link href="/blog">ブログ記事一覧へ</Link>
+        <Link href={{
+          pathname: '/blog',
+          query: { pageType: '01' }
+        }}>ブログ記事一覧へ(パラメータ付き)</Link>
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
             Get started by editing{" "}
