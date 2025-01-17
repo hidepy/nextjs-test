@@ -9,32 +9,27 @@ export async function GET(request: Request, { params }: { params: { id: string }
   try {
     const _params = await params
     const post = await prisma.post.findUnique({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(_params.id) },
     });
 
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    // const post = posts.find(post => post.id === Number(_params.id))
-
-    // return NextResponse.json({ post });
-    return NextResponse.json({ success: true, post: post});
+    return NextResponse.json({ success: true, post: post });
   } catch (error) {
     console.error('Error fetching post:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
-  console.log(request)
+export async function PUT(request: Request) {
   try {
-    const { title, content, author } = await request.json();
+    const { id, title, content, author } = await request.json();
 
-    console.log(title)
-
-    const res = await prisma.post.create({
-      data: {title, content, author},
+    const res = await prisma.post.update({
+      where: { id: id },
+      data: { title, content, author },
     })
 
     return NextResponse.json({ success: true, post: res });

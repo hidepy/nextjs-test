@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-// import { posts } from '@/app/lib/placeholder-data'
 
 const prisma = new PrismaClient();
 
@@ -10,8 +9,6 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     });
 
-    // console.log(posts)
-
     return NextResponse.json({ success: true, posts: posts });
   } catch (error) {
     console.error('Error fetching posts:', error);
@@ -20,7 +17,6 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  // console.log(request)
   try {
     const { title, content, author } = await request.json();
     const post = await prisma.post.create({

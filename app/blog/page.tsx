@@ -8,14 +8,14 @@ import { Post } from '../lib/interface/Post';
 async function getPosts(): Promise<Post[]> {
     const res = await fetch('http://localhost:3000/api/posts', { cache: 'no-store' });
     if (!res.ok) {
-      throw new Error('Failed to fetch posts');
+        throw new Error('Failed to fetch posts');
     }
     const data = await res.json();
 
     console.log(data)
 
     return data.posts;
-  }
+}
 
 export default async function Page() {
     // const router = useRouter()
@@ -25,15 +25,6 @@ export default async function Page() {
     return (
         <>
             <BackButton />
-
-            {
-                /* <button
-                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4'
-                    onClick={() => router.push("/blog/new")}
-                >
-                    新規投稿
-                </button> */
-            }
 
             <Link href="/blog/new">新規投稿</Link>
 
