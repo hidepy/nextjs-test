@@ -1,6 +1,15 @@
+"use client"
+
 import { BackButton } from '@/src/components/BackButton'
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
+
+type Props = {
+  params: {
+    id: string
+  }
+}
 
 async function getPost(id: String) {
   const res = await fetch(`http://localhost:3000/api/posts/${id}`, { cache: 'no-store' });
@@ -13,25 +22,36 @@ async function getPost(id: String) {
     throw new Error('Server Error Occurred...')
   }
 
-  return (await res.json()).post
+  return await res.json()
 }
 
-export default async function BlogPost({ params }: { params: { id: string, editable: boolean } }) {
-  const _params = await params
-  const id = _params.id
+const BlogPost: FC<Props> = props => {
+  const { id } = useParams();
 
-  const post = await getPost(id)
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [isLoading, setLoading] = useState(true)
 
-  if (!post) {
-    return (<div>Post not found...</div>)
-  }
+  if (!id) return <p>No data</p>
+
+  useEffect(() => {
+    getPost(id.toString())
+      .then((data) => {
+        setTitle(data.post.title)
+        setContent(data.post.content)
+        setLoading(false)
+      })
+  }, [])
+
+  if (isLoading) return <p>Loading...</p>
+  if (!title) return <p>No data</p>
 
   return (
     <>
       <BackButton />
       <div className='m-8'>
-        <h1 className='font-bold text-2xl'>{post.title}</h1>
-        <p>{post.content}</p>
+        <h1 className='font-bold text-2xl'>{title}</h1>
+        <p>{content}</p>
       </div>
 
       <Link href={`/blog/${id}/edit`}>
@@ -44,3 +64,5 @@ export default async function BlogPost({ params }: { params: { id: string, edita
     </>
   )
 }
+
+export default BlogPost
