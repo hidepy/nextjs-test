@@ -1,7 +1,3 @@
-// "use client"
-import { Post } from '@/app/lib/interface/Post';
-// import { useState } from 'react';
-// import { useRouter } from 'next/navigation'
 import { BackButton } from '@/src/components/BackButton'
 import React from 'react';
 import Link from 'next/link';
@@ -19,8 +15,6 @@ async function getPost(id: String) {
 
   return (await res.json()).post
 }
-
-
 
 export default async function BlogPost({ params }: { params: { id: string, editable: boolean } }) {
   const _params = await params
@@ -49,5 +43,4 @@ export default async function BlogPost({ params }: { params: { id: string, edita
       </Link>
     </>
   )
-
 }

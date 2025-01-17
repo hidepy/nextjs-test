@@ -1,9 +1,6 @@
-// import { posts } from '@/app/lib/placeholder-data'
 import Link from 'next/link'
 import { BackButton } from '@/src/components/BackButton'
 import { Post } from '../lib/interface/Post';
-// import { useRouter } from 'next/navigation'
-// import { useRouter } from 'next/router'
 
 async function getPosts(): Promise<Post[]> {
     const res = await fetch('http://localhost:3000/api/posts', { cache: 'no-store' });
@@ -12,14 +9,10 @@ async function getPosts(): Promise<Post[]> {
     }
     const data = await res.json();
 
-    console.log(data)
-
     return data.posts;
 }
 
 export default async function Page() {
-    // const router = useRouter()
-
     const posts = await getPosts();
 
     return (

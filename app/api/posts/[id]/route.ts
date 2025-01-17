@@ -24,15 +24,10 @@ export async function GET(request: Request, { params }: { params: { id: string }
 }
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
-  console.log('PUT COMESSS!!!')
-  console.log(request)
-  console.log(params)
   const data = await request.json()
-  console.log(data)
+
   try {
     const { id, title, content, author } = data;
-
-    console.log(id, title)
 
     const res = await prisma.post.update({
       where: { id: Number(id) },
