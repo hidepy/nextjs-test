@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 // import { posts } from '@/app/lib/placeholder-data'
 
@@ -23,14 +23,33 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
+  console.log('PUT COMESSS!!!')
+  console.log(request)
+  console.log(params)
+  const data = await request.json()
+  console.log(data)
   try {
-    const { id, title, content, author } = await request.json();
+    const { id, title, content, author } = data;
+
+    console.log(id, title)
 
     const res = await prisma.post.update({
-      where: { id: id },
+      where: { id: Number(id) },
       data: { title, content, author },
     })
+      .catch((e) => {
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+          console.log('PRISMA KNOWN ERROR...')
+          console.log(e.code)
+          console.log(e.message)
+        }
+        else {
+          console.log('PRISMA UNKNOWN ERROR...')
+        }
+
+        console.log(e)
+      })
 
     return NextResponse.json({ success: true, post: res });
   }
